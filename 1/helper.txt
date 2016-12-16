@@ -1,0 +1,11 @@
+ifconfig | awk -F"[ :]+" '/inet addr/ && !/127.0/ {print $4}'
+
+gcc udp_client.c -o client
+
+gcc udp_server.c -o server
+
+./server 50001
+
+./client 192.168.0.25 50001
+
+

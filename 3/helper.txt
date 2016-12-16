@@ -1,0 +1,36 @@
+ifconfig | awk -F"[ :]+" '/inet addr/ && !/127.0/ {print $4}'
+
+gcc -Wall dfs.c hashmap.c -o dfs -lcrypto -lssl -lm
+
+gcc -Wall dfc.c hashmap.c -o dfc -lcrypto -lssl -lm
+
+./dfc dfc.conf
+
+./dfs /DFS1 10001
+
+LIST /BASH/
+
+PUT /BASH/ d.JPG
+
+GET /BASH/ d.JPG
+
+
+
+int fd = open(filename, O_RDONLY);
+char *p = mmap(0, size, PROT_READ, MAP_PRIVATE, fd, start);
+fwrite(p, 1, size, stream);
+munmap(p, size);
+
+
+/* copy file using sendfile */
+    long int offset = start;
+    rc = sendfile (sockfd, fd, &offset, size);
+    if (rc == -1) {
+      printf("error from sendfile: %s\n", strerror(errno));
+      return 0;
+    }
+    if (rc != size) {
+      printf("incomplete transfer from sendfile: %d of %d bytes\n",rc,size);
+      return rc;
+    }
+

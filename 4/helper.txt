@@ -1,0 +1,47 @@
+ifconfig | awk -F"[ :]+" '/inet addr/ && !/127.0/ {print $4}'
+
+gcc -Wall webProxy.c -o webProxy -lcrypto -lssl -lm
+
+./webProxy 20001 60
+
+1. test_1from_server - this testcase will pass when page is directly retrieved from server
+
+telnet localhost 20001
+
+GET http://www.umich.edu/~chemh215/W09HTML/SSG4/ssg6/html/Website/DREAMWEAVERPGS/first.html HTTP/1.0
+
+
+2. test_2from_proxy  -  this testcase will pass when page is retrieved from proxy
+
+telnet localhost 20001
+
+GET http://www.umich.edu/~chemh215/W09HTML/SSG4/ssg6/html/Website/DREAMWEAVERPGS/first.html HTTP/1.0
+
+3. test_3clear_proxy -  this testcase will pass when page is retrived from server after cache timeout
+
+telnet localhost 20001
+
+GET http://www.umich.edu/~chemh215/W09HTML/SSG4/ssg6/html/Website/DREAMWEAVERPGS/first.html HTTP/1.0
+
+6. test_6keepalive    -   this testcase will pass if connection:keep-alive is send so that the next request can be processed in same connection.
+
+telnet localhost 20001
+
+GET http://www.umich.edu/~chemh215/W09HTML/SSG4/ssg6/html/Website/DREAMWEAVERPGS/first.html HTTP/1.1
+
+4. test_4prefetch      -   this testcase will pass if pre-fetching works
+
+telnet localhost 20001
+
+GET http://www.umich.edu/~chemh215/W09HTML/SSG4/ssg6/html/Website/DREAMWEAVERPGS/first.html HTTP/1.1
+
+GET http://www-personal.umich.edu/~kevinand/first.html HTTP/1.1
+
+GET http://www-personal.umich.edu/~zechen/first.html HTTP/1.1
+
+5. test_5multithread -   this testcase will pass when your program handles multiple connections
+
+telnet localhost 20001
+
+GET http://www.wix.com/ HTTP/1.1
+
